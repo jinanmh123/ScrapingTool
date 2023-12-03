@@ -6,14 +6,14 @@
 
 > [!IMPORTANT]
 > You can run the script just like a normal python script. You can use `python main.py` or `python3 main.py` to run the whole script, whichever works best for you.
-> The output response is not printed, but rather saved to `output.json`
+> The output response is not printed, but rather saved to `output.txt` file.
 
-This `scrapy` script can be used as an alternative to `requests` library.
-Sending the `POST` request asynchronously using the `httpx` library and `asyncio` library within the `scrapy` spider named `my_spider` makes the ***script blazing fast.***
+In the scrapy spider, the `POST` request is sent asynchronously. This makes the script ***much much faster***. `asyncio` and `httpx` has been implemented to achieve this blazing speed.
 
 ***The main structure of the scrapy spider-***
 
 ```
+# create the scrapy spider class
 class MySpider(scrapy.Spider):
     name = 'my_spider'
     start_url = 'https://fooddelivery.mykeeta.com/api/v1/homePage/homePageInfo'
@@ -33,20 +33,22 @@ class MySpider(scrapy.Spider):
             )
 
             # Save the response to output.js file
-            with open('output.json', 'wb') as f:
+            with open('output.txt', 'wb') as f:
                 f.write(response.content)
     # start the request
     def start_requests(self):
         ...
+
+    # parse
+    def parse(self, response):
+        print(response.body)
     
 ```
 
-The `json` library has been used to handle json data.
-These three libraries are imported with `scrapy` at the top of the script.
+These two libraries are imported with `scrapy` at the top of the script.
 
 ```
 import scrapy
-import json
 import httpx
 import asyncio
 ```
@@ -74,13 +76,6 @@ The code at the bottom is used to run the spider-
 ```
 if __name__ == '__main__':
     from scrapy import cmdline
-    cmdline.execute(['python','-m','scrapy', 'runspider', 'main.py'])
-```
-
-> [!NOTE]
-> Here, you can change 'python' to 'python3' if you need to-
-
-```
-cmdline.execute(['python3','-m','scrapy', 'runspider', 'main.py'])
+    cmdline.execute(['scrapy', 'runspider', 'main.py'])
 ```
 
