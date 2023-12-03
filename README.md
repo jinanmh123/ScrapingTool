@@ -1,4 +1,4 @@
-# ScrapingTool
+# ScrapyTool
 
 > [!NOTE]
 > This code is especially written for a freelance project (contest) on freelancer.com.
