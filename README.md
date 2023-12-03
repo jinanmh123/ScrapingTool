@@ -38,11 +38,6 @@ class MySpider(scrapy.Spider):
     # start the request
     def start_requests(self):
         ...
-
-    # mainly prints out log data necessary for debugging, such as when the spider was run, when it was closed, how many websites crawled or scraped etc.
-    def parse(self, response):
-        print(response.body)
-
     
 ```
 
