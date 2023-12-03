@@ -1,5 +1,4 @@
 import scrapy
-import json
 import httpx
 import asyncio
 
@@ -27,14 +26,14 @@ class MySpider(scrapy.Spider):
         'region': 'HK',
         'request_id': '28BAC42F-6E16-4DFD-B978-EE48F2BEA1AF',
         'Content-Type': 'application/json; charset=UTF-8',
-        'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 13; sdk_gphone64_arm64 Build/TE1A.220922.034)'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
     }
 
     # The body/main data (same as in the given 'requests' library script)
-    form_data = {
-        "location": {
-            "latitude": "22.31924733900611",
-            "longitude": "114.1692228242755"
+    json_data = {
+        'location': {
+            'latitude': '22.31924733900611',
+            'longitude': '114.1692228242755'
         }
     }
 
@@ -42,13 +41,17 @@ class MySpider(scrapy.Spider):
     async def make_request(self):
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                self.start_url,
+                'https://fooddelivery.mykeeta.com/api/v1/homePage/homePageInfo',
                 headers=self.headers,
-                data=json.dumps(self.form_data),
+                json=self.json_data,
+                follow_redirects=True  # Enable automatic redirects
             )
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+            # print the status code (for debugging purposes)
+            print(response.status_code)
 
             # Save the response to output.js file
-            with open('output.json', 'wb') as f:
+            with open('output.txt', 'wb') as f:
                 f.write(response.content)
 
     # start the request
@@ -56,10 +59,12 @@ class MySpider(scrapy.Spider):
         loop = asyncio.get_event_loop()
         yield from loop.run_until_complete(self.make_request())
 
+
     def parse(self, response):
         print(response.body)
 
-# run the spider
+
+# run the spider using scrapy cmdline
 if __name__ == '__main__':
     from scrapy import cmdline
-    cmdline.execute(['python','-m','scrapy', 'runspider', 'main.py'])
+    cmdline.execute(['scrapy', 'runspider', 'main.py'])
