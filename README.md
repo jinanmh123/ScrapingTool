@@ -33,7 +33,7 @@ if __name__ == '__main__':
     cmdline.execute(['python','-m','scrapy', 'runspider', 'main.py'])
 ```
 
-Here, you can change 'python' to 'python3' if, 'python' does not work.
+Here, you can change 'python' to 'python3' if you need to-.
 
 ```
 cmdline.execute(['python3','-m','scrapy', 'runspider', 'main.py'])
