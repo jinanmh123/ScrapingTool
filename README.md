@@ -1,7 +1,7 @@
 # ScrapingTool
 
 > [!NOTE]
-> This is code for a freelance project.
+> This code is especially written for a freelance project (contest) on freelancer.com.
 > This script is created using the scrapy python library, as requested.
 
 > [!IMPORTANT]
